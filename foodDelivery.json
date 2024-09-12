@@ -1,0 +1,160 @@
+{
+  "User": {
+    "attributes": {
+      "id": "INTEGER",
+      "name": "STRING",
+      "email": "STRING",
+      "password": "STRING",
+      "phone_number": "STRING",
+      "address": "STRING",
+      "created_at": "DATETIME",
+      "updated_at": "DATETIME"
+    },
+    "relationships": {
+      "hasMany": {
+        "Order": {
+          "foreignKey": "userId"
+        }
+      }
+    }
+  },
+  "Restaurant": {
+    "attributes": {
+      "id": "INTEGER",
+      "name": "STRING",
+      "description": "STRING",
+      "address": "STRING",
+      "phone_number": "STRING",
+      "cuisine": "STRING",
+      "image_url": "STRING",
+      "rating": "FLOAT",
+      "created_at": "DATETIME",
+      "updated_at": "DATETIME"
+    },
+    "relationships": {
+      "hasMany": {
+        "MenuItem": {
+          "foreignKey": "restaurantId"
+        },
+        "Order": {
+          "foreignKey": "restaurantId"
+        }
+      }
+    }
+  },
+  "MenuItem": {
+    "attributes": {
+      "id": "INTEGER",
+      "restaurantId": "INTEGER",
+      "name": "STRING",
+      "description": "STRING",
+      "price": "DECIMAL",
+      "image_url": "STRING",
+      "created_at": "DATETIME",
+      "updated_at": "DATETIME"
+    },
+    "relationships": {
+      "belongsTo": {
+        "Restaurant": {
+          "foreignKey": "restaurantId"
+        }
+      },
+      "hasMany": {
+        "OrderItem": {
+          "foreignKey": "menuItemId"
+        }
+      }
+    }
+  },
+  "Order": {
+    "attributes": {
+      "id": "INTEGER",
+      "userId": "INTEGER",
+      "restaurantId": "INTEGER",
+      "status": "ENUM('pending', 'accepted', 'preparing', 'out for delivery', 'delivered', 'canceled')",
+      "total_amount": "DECIMAL",
+      "created_at": "DATETIME",
+      "updated_at": "DATETIME"
+    },
+    "relationships": {
+      "belongsTo": {
+        "User": {
+          "foreignKey": "userId"
+        },
+        "Restaurant": {
+          "foreignKey": "restaurantId"
+        }
+      },
+      "hasMany": {
+        "OrderItem": {
+          "foreignKey": "orderId"
+        }
+      },
+      "hasOne": {
+        "Delivery": {
+          "foreignKey": "orderId"
+        }
+      }
+    }
+  },
+  "OrderItem": {
+    "attributes": {
+      "id": "INTEGER",
+      "orderId": "INTEGER",
+      "menuItemId": "INTEGER",
+      "quantity": "INTEGER",
+      "created_at": "DATETIME",
+      "updated_at": "DATETIME"
+    },
+    "relationships": {
+      "belongsTo": {
+        "Order": {
+          "foreignKey": "orderId"
+        },
+        "MenuItem": {
+          "foreignKey": "menuItemId"
+        }
+      }
+    }
+  },
+  "Delivery": {
+    "attributes": {
+      "id": "INTEGER",
+      "orderId": "INTEGER",
+      "deliveryPersonId": "INTEGER",
+      "status": "ENUM('assigned', 'picked up', 'on the way', 'delivered')",
+      "estimatedDeliveryTime": "DATETIME",
+      "actualDeliveryTime": "DATETIME",
+      "created_at": "DATETIME",
+      "updated_at": "DATETIME"
+    },
+    "relationships": {
+      "belongsTo": {
+        "Order": {
+          "foreignKey": "orderId"
+        },
+        "DeliveryPerson": {
+          "foreignKey": "deliveryPersonId"
+        }
+      }
+    }
+  },
+  "DeliveryPerson": {
+    "attributes": {
+      "id": "INTEGER",
+      "name": "STRING",
+      "phone_number": "STRING",
+      "vehicle": "STRING",
+      "status": "ENUM('available', 'unavailable', 'on_delivery')",
+      "created_at": "DATETIME",
+      "updated_at": "DATETIME"
+    },
+    "relationships": {
+      "hasMany": {
+        "Delivery": {
+          "foreignKey": "deliveryPersonId"
+        }
+      }
+    }
+  }
+}
