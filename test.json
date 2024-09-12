@@ -1,0 +1,31 @@
+{
+  "Author": {
+    "attributes": {
+      "id": "INTEGER",
+      "name": "STRING",
+      "email": "STRING"
+    },
+    "relationships": {
+      "hasMany": {
+        "Post": {
+          "foreignKey": "userId"
+        }
+      }
+    }
+  },
+  "Post": {
+    "attributes": {
+      "id": "INTEGER",
+      "title": "STRING",
+      "content": "TEXT",
+      "userId": "INTEGER"
+    },
+    "relationships": {
+      "belongsTo": {
+        "User": {
+          "foreignKey": "userId"
+        }
+      }
+    }
+  }
+}
